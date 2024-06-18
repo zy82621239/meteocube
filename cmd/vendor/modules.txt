@@ -1,0 +1,16 @@
+# processor v0.0.1 => ../pkg/processor
+## explicit; go 1.20
+processor
+# sink v0.0.1 => ../pkg/sink
+## explicit; go 1.20
+sink
+# source v0.0.1 => ../pkg/source
+## explicit; go 1.20
+source
+# transform v0.0.1 => ../pkg/transform
+## explicit; go 1.20
+transform
+# processor => ../pkg/processor
+# source => ../pkg/source
+# transform => ../pkg/transform
+# sink => ../pkg/sink

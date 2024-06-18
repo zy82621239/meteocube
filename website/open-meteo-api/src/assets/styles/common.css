@@ -1,0 +1,19 @@
+body{
+    margin:0;
+    padding: 0;
+}
+.auto-wrap,p{
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+mark, .mark {
+    padding: .1875em;
+    color: #212529;
+    background-color: #fff3cd;
+}
+.el-row{
+    overflow: hidden;
+}
+
