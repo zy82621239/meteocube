@@ -1,0 +1,183 @@
+## API接口文档
+### 概述
+该文档描述了四个API接口，分别用于获取历史天气数据、资源数据、地理信息和天气预报数据。用户可以指定经纬度、日期和其他参数来获取所需的数据。
+---
+### 1. 天气预报数据API
+#### 基本信息
+- **URL**: `http://192.168.238.145:5003/weather`
+- **方法**: `GET`
+- **响应格式**: `JSON`
+#### 请求参数
+| 参数名              | 类型     | 必填 | 描述                                                                                   |
+|------------------|--------|----|--------------------------------------------------------------------------------------|
+| `latitude`       | float  | 是  | 地理纬度，指定需要获取天气预报数据的地点。例如：`52.52`。                                                  |
+| `longitude`      | float  | 是  | 地理经度，指定需要获取天气预报数据的地点。例如：`120.41`。                                               |
+| `par`            | string | 是  | 需要获取的天气参数列表，以逗号分隔。例如：`temperature_2m,cloud_cover,wind_direction_80m,wind_speed_80m,temperature_80m`。 |
+| `timezone`       | string | 是  | 时区信息，用于格式化时间数据。例如：`UTC`。                                                     |
+| `interval`       | string | 否  | 时间间隔，指定数据的时间分辨率，例如：`15T`表示15分钟，`1H`表示1小时。                                          |
+
+#### 示例请求
+```
+http://192.168.238.145:5003/weather?latitude=52.52&longitude=120.41&par=temperature_2m,cloud_cover,wind_direction_80m,wind_speed_80m,temperature_80m&timezone=UTC&interval=15T
+```
+#### 错误处理
+如果请求参数无效或处理过程中发生错误，API将返回相应的错误消息。以下是一个错误响应示例：
+```json
+{
+    "error": "Invalid request parameters"
+}
+```
+
+---
+
+### 2. 历史天气数据API
+
+#### 基本信息
+- **URL**: `http://192.168.238.145:5004/history`
+- **方法**: `GET`
+- **响应格式**: `JSON`
+
+#### 请求参数
+
+| 参数名            | 类型     | 必填 | 描述                                                                                  |
+|----------------|--------|----|-------------------------------------------------------------------------------------|
+| `latitude`     | float  | 是  | 地理纬度，指定需要获取天气数据的地点。例如：`52.52`。                                               |
+| `longitude`    | float  | 是  | 地理经度，指定需要获取天气数据的地点。例如：`13.41`。                                               |
+| `start_date`   | string | 是  | 起始日期，格式为`YYYY-MM-DD`，例如：`2023-06-02`。                                           |
+| `end_date`     | string | 是  | 结束日期，格式为`YYYY-MM-DD`，例如：`2023-06-03`。                                            |
+| `par`          | string | 是  | 需要获取的天气参数列表，以逗号分隔。例如：`temperature_2m,relative_humidity_2m,rain,snowfall,wind_speed_10m,wind_direction_100m`。 |
+
+#### 示例请求
+```
+http://192.168.238.145:5004/history?latitude=52.52&longitude=13.41&start_date=2023-06-02&end_date=2023-06-03&par=temperature_2m,relative_humidity_2m,rain,snowfall,wind_speed_10m,wind_direction_100m
+```
+#### 错误处理
+如果请求参数无效或处理过程中发生错误，API将返回相应的错误消息。以下是一个错误响应示例：
+```json
+{
+    "error": "Invalid request parameters"
+}
+```
+
+---
+
+### 3. 地理信息接口API
+#### 基本信息
+- **URL**: `http://192.168.238.145:5001/sunrise_sunset`
+- **方法**: `GET`
+- **响应格式**: `JSON`
+
+#### 请求参数
+
+| 参数名      | 类型     | 必填 | 描述                                                      |
+|----------|--------|----|---------------------------------------------------------|
+| `date`   | string | 是  | 日期，格式为`YYYY-MM-DD`，例如：`2024-06-14`。                           |
+| `lat`    | float  | 是  | 地理纬度，指定需要获取日出日落时间的地点。例如：`40.0`。                       |
+| `lon`    | float  | 是  | 地理经度，指定需要获取日出日落时间的地点。例如：`80.0`。                       |
+| `tz`     | string | 是  | 时区信息，用于格式化时间数据。例如：`Asia/Shanghai`。                       
+
+ |
+
+#### 示例请求
+```
+http://192.168.238.145:5001/sunrise_sunset?date=2024-06-14&lon=80.0&lat=40.0&tz=Asia/Shanghai
+```
+
+#### 响应格式
+```json
+{
+    "date": "2024-06-14",
+    "latitude": 40.0,
+    "longitude": 80.0,
+    "timezone": "Asia/Shanghai",
+    "elevation": 1060.0,
+    "sunrise": "2024-06-14T05:24:00+08:00",
+    "sunset": "2024-06-14T19:45:00+08:00"
+}
+```
+#### 响应字段说明
+
+| 字段名       | 类型     | 描述                                        |
+|-----------|--------|-------------------------------------------|
+| `date`    | string | 请求的日期。                                    |
+| `latitude`| float  | 请求的地理纬度。                                  |
+| `longitude`| float | 请求的地理经度。                                  |
+| `timezone`| string | 请求的时区信息。                                  |
+| `elevation`| float | 请求的海拔高度。                                  |
+| `sunrise` | string | 日出时间，格式为`YYYY-MM-DDTHH:MM:SS±HH:MM`。     |
+| `sunset`  | string | 日落时间，格式为`YYYY-MM-DDTHH:MM:SS±HH:MM`。     |
+
+#### 错误处理
+如果请求参数无效或处理过程中发生错误，API将返回相应的错误消息。以下是一个错误响应示例：
+```json
+{
+    "error": "Invalid request parameters"
+}
+```
+
+---
+
+### 4. 环境资源数据API
+
+#### 基本信息
+- **URL**: `http://192.168.238.145:5005/resources`
+- **方法**: `GET`
+- **响应格式**: `JSON`
+
+#### 请求参数
+
+| 参数名      | 类型     | 必填 | 描述                                                                   |
+|----------|--------|----|----------------------------------------------------------------------|
+| `lat`    | float  | 是  | 地理纬度，指定需要获取环境资源数据的地点。例如：`60.0`。                               |
+| `lon`    | float  | 是  | 地理经度，指定需要获取环境资源数据的地点。例如：`80.0`。                               |
+| `par`    | string | 是  | 需要获取的环境资源参数列表，以逗号分隔，例如：`wind,solar,pollutants`。                |
+
+#### 示例请求
+```
+http://192.168.238.145:5005/resources?lon=60.0&lat=80.0&par=wind,solar,pollutants
+```
+
+#### 响应格式
+```json
+{
+    "longitude": 60.0,
+    "latitude": 80.0,
+    "resources": {
+        "wind": 5.6,
+        "solar": 1200,
+        "pollutants": {
+            "NO2": 10.24,
+            "NO3": 3.76,
+            "Cl": 0.83,
+            "NH4": 4.41,
+            "SO4": 7.04
+        }
+    }
+}
+```
+
+#### 响应字段说明
+
+| 字段名         | 类型     | 描述                                                      |
+|-------------|--------|---------------------------------------------------------|
+| `longitude` | float  | 请求的地理经度。                                              |
+| `latitude`  | float  | 请求的地理纬度。                                              |
+| `resources` | object | 包含各类环境资源数据的对象。                                          |
+| `resources.wind` | float | 风速数据。                                                 |
+| `resources.solar` | float | 太阳辐射数据。                                             |
+| `resources.pollutants` | object | 包含各类污染物数据的对象。                                        |
+| `resources.pollutants.NO2` | float | 二氧化氮浓度数据。                                            |
+| `resources.pollutants.NO3` | float | 硝酸根浓度数据。                                            |
+| `resources.pollutants.Cl` | float | 氯离子浓度数据。                                            |
+| `resources.pollutants.NH4` | float | 铵根离子浓度数据。                                           |
+| `resources.pollutants.SO4` | float | 硫酸根浓度数据。                                            |
+
+#### 错误处理
+如果请求参数无效或处理过程中发生错误，API将返回相应的错误消息。以下是一个错误响应示例：
+```json
+{
+    "error": "Invalid request parameters"
+}
+```
+
+---
